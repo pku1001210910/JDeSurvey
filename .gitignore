@@ -1,0 +1,8 @@
+/rebel.xml
+
+.project
+.classpath
+.myumldata
+.settings/
+target/
+bin/
