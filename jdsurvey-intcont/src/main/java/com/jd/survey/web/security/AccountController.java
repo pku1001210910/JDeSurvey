@@ -1,18 +1,18 @@
-  /*Copyright (C) 2014  JD Software, Inc.
+/*Copyright (C) 2014  JD Software, Inc.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.jd.survey.web.security;
 
 import java.io.UnsupportedEncodingException;
@@ -46,69 +46,69 @@ import com.jd.survey.domain.security.User;
 import com.jd.survey.service.security.UserService;
 import com.jd.survey.service.settings.ApplicationSettingsService;
 
-
-
 @RequestMapping("/account")
 @Controller
 public class AccountController {
 	private static final Log log = LogFactory.getLog(AccountController.class);
-	
-	@Autowired private UserService userService;
-	@Autowired private AuthenticationManager authenticationManager;
-	@Autowired private ApplicationSettingsService applicationSettingsService;
-	
+
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	@Autowired
+	private ApplicationSettingsService applicationSettingsService;
+
 	private GlobalSettings globalSettings;
-	
+
 	@PostConstruct
-	public void initIt() throws Exception{
+	public void initIt() throws Exception {
 		globalSettings = applicationSettingsService.getSettings();
 	}
-	 
+
 	/**
-	 * Shows the logged in user information 
+	 * Shows the logged in user information
+	 * 
 	 * @param principal
 	 * @param uiModel
 	 * @return
 	 */
-	@Secured({"ROLE_SURVEY_ADMIN" })
+	@Secured({ "ROLE_SURVEY_ADMIN" })
 	@RequestMapping(value = "/show", produces = "text/html")
-	public String show(Principal principal,
-					   Model uiModel) {
+	public String show(Principal principal, Model uiModel) {
 		try {
 			User loggedInUser = userService.user_findByLogin(principal.getName());
 			uiModel.addAttribute("user", loggedInUser);
 			return "account/show";
 		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 			throw (new RuntimeException(e));
 		}
 	}
-	
+
 	/**
-	 * prepares for user update information 
+	 * prepares for user update information
+	 * 
 	 * @param principal
 	 * @param uiModel
 	 * @return
 	 */
-	@Secured({"ROLE_SURVEY_ADMIN"})
+	@Secured({ "ROLE_SURVEY_ADMIN" })
 	@RequestMapping(value = "/update", produces = "text/html")
-	public String updateForm(Principal principal,Model uiModel) {
-		
-		try{
+	public String updateForm(Principal principal, Model uiModel) {
+
+		try {
 			User loggedInUser = userService.user_findByLogin(principal.getName());
 			uiModel.addAttribute("user", loggedInUser);
 			return "account/update";
 		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 			throw (new RuntimeException(e));
 		}
 	}
-	
-	
-	
-	
+
 	/**
 	 * Updates logged in user information
+	 * 
 	 * @param proceed
 	 * @param user
 	 * @param bindingResult
@@ -117,18 +117,13 @@ public class AccountController {
 	 * @param httpServletRequest
 	 * @return
 	 */
-	@Secured({"ROLE_SURVEY_ADMIN"})
+	@Secured({ "ROLE_SURVEY_ADMIN" })
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@RequestParam(value = "_proceed", required = false) String proceed,
-			@Valid User user, 
-			BindingResult bindingResult, 
-			Principal principal,
-			Model uiModel, 
+	public String update(@RequestParam(value = "_proceed", required = false) String proceed, @Valid User user, BindingResult bindingResult, Principal principal, Model uiModel,
 			HttpServletRequest httpServletRequest) {
 		log.info("update(): handles PUT");
-		try{
-			User loggedInUser = userService.user_findByLogin(principal.getName());
-			if(proceed != null){
+		try {
+			if (proceed != null) {
 				if (bindingResult.hasErrors()) {
 					uiModel.addAttribute("user", user);
 					return "account/update";
@@ -138,7 +133,7 @@ public class AccountController {
 					uiModel.addAttribute("user", user);
 					return "account/update";
 				}
-				if (userService.user_findByEmail(user.getEmail()) != null && userService.user_ValidateEmailIsUnique(user) == true){
+				if (userService.user_findByEmail(user.getEmail()) != null && userService.user_ValidateEmailIsUnique(user) == true) {
 					bindingResult.rejectValue("email", "field_unique");
 					uiModel.addAttribute("user", user);
 					return "account/update";
@@ -147,45 +142,39 @@ public class AccountController {
 				user = userService.user_updateInformation(user);
 				return "redirect:/account/show";
 
-			}
-			else {
+			} else {
 				return "redirect:/account/show";
 			}
 
-	} catch (Exception e) {
-		log.error(e.getMessage(),e);
-		throw (new RuntimeException(e));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw (new RuntimeException(e));
+		}
 	}
-}
-		
-	
-	
-	
-	
-	
+
 	/**
-	 * Prepares to update  logged in user password
+	 * Prepares to update logged in user password
+	 * 
 	 * @param principal
 	 * @param uiModel
 	 * @return
 	 */
-	@Secured({"ROLE_SURVEY_ADMIN" })
+	@Secured({ "ROLE_SURVEY_ADMIN" })
 	@RequestMapping(value = "/rpass", produces = "text/html")
-	public String userUpdatePassword(Principal principal,
-			Model uiModel) {
+	public String userUpdatePassword(Principal principal, Model uiModel) {
 		try {
 			User loggedInUser = userService.user_findByLogin(principal.getName());
 			uiModel.addAttribute("user", loggedInUser);
 			return "account/rpass";
 		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 			throw (new RuntimeException(e));
 		}
 	}
-	
 
 	/**
-	 * Updates  logged in user password
+	 * Updates logged in user password
+	 * 
 	 * @param oldPassword
 	 * @param newPassword
 	 * @param newPasswordConfirm
@@ -195,97 +184,91 @@ public class AccountController {
 	 * @param httpServletRequest
 	 * @return
 	 */
-	@Secured({"ROLE_SURVEY_ADMIN"})
+	@Secured({ "ROLE_SURVEY_ADMIN" })
 	@RequestMapping(value = "/rpass", method = RequestMethod.POST, produces = "text/html")
-	public String updatePasswordPost(@RequestParam(value = "password", required = true) String oldPassword,
-									@RequestParam(value = "nPassword", required = true) String newPassword,
-									@RequestParam(value = "cPassword", required = true) String newPasswordConfirm,
-									@RequestParam(value = "_proceed", required = false) String proceed,
-									Principal principal,
-									Model uiModel, 
-									HttpServletRequest httpServletRequest) {
-		try{
-			if(proceed != null){
-			
-				//check that the old password is correct
+	public String updatePasswordPost(@RequestParam(value = "password", required = true) String oldPassword, @RequestParam(value = "nPassword", required = true) String newPassword,
+			@RequestParam(value = "cPassword", required = true) String newPasswordConfirm, @RequestParam(value = "_proceed", required = false) String proceed, Principal principal,
+			Model uiModel, HttpServletRequest httpServletRequest) {
+		try {
+			if (proceed != null) {
+
+				// check that the old password is correct
 				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principal.getName(), oldPassword);
 				authenticationToken.setDetails(new WebAuthenticationDetails(httpServletRequest));
 				try {
 					Authentication auth = authenticationManager.authenticate(authenticationToken);
-					if (auth== null || !auth.isAuthenticated()){
-						//invalid password enetered
+					if (auth == null || !auth.isAuthenticated()) {
+						// invalid password enetered
 						uiModel.asMap().clear();
-						uiModel.addAttribute("status", "E"); //Unmatching Passwords
+						uiModel.addAttribute("status", "E"); // Unmatching
+																// Passwords
 						return "account/rpass";
 					}
 
 				} catch (AuthenticationException e) {
 					uiModel.asMap().clear();
-					uiModel.addAttribute("status", "E"); //Unmatching Passwords
+					uiModel.addAttribute("status", "E"); // Unmatching Passwords
 					return "account/rpass";
 				}
-				//Check new password strenght 
-				if(!GenericValidator.matchRegexp(newPassword,globalSettings.getPasswordEnforcementRegex())){
+				// Check new password strenght
+				if (!GenericValidator.matchRegexp(newPassword, globalSettings.getPasswordEnforcementRegex())) {
 					uiModel.asMap().clear();
-					uiModel.addAttribute("status", "I"); //Unmatching Passwords
+					uiModel.addAttribute("status", "I"); // Unmatching Passwords
 					return "account/rpass";
 				}
-				//check that passwords match 	
+				// check that passwords match
 				if (!newPassword.equals(newPasswordConfirm)) {
 					uiModel.asMap().clear();
-					
-					uiModel.addAttribute("status", "U"); //Unmatching Passwords
+
+					uiModel.addAttribute("status", "U"); // Unmatching Passwords
 					return "account/rpass";
 				}
 				User loggedInUser = userService.user_findByLogin(principal.getName());
-				//All validations passed, save the HASH of the password in the database
+				// All validations passed, save the HASH of the password in the
+				// database
 				loggedInUser.setPassword(newPassword);
 				userService.user_updatePassword(loggedInUser);
-				uiModel.addAttribute("status", "S");//success
-				return "account/rpass";	
-			}
-			else {
+				uiModel.addAttribute("status", "S");// success
+				return "account/rpass";
+			} else {
 				return "redirect:/account/show";
 			}
-			
+
 		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 			throw (new RuntimeException(e));
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/**
-	 * helper function for encoding paths 
+	 * helper function for encoding paths
+	 * 
 	 * @param pathSegment
 	 * @param httpServletRequest
 	 * @return
 	 */
 	String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
 		log.info("encodeUrlPathSegment()");
-		try{
+		try {
 			String enc = httpServletRequest.getCharacterEncoding();
 			if (enc == null) {
 				enc = WebUtils.DEFAULT_CHARACTER_ENCODING;
 			}
 			try {
 				pathSegment = UriUtils.encodePathSegment(pathSegment, enc);
-			} catch (UnsupportedEncodingException uee) {log.error(uee);}
+			} catch (UnsupportedEncodingException uee) {
+				log.error(uee);
+			}
 			return pathSegment;
 		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 			throw (new RuntimeException(e));
 		}
 	}
 
 	/**
-	 * Helper function to handle unhandled runtime exception on the controller 
+	 * Helper function to handle unhandled runtime exception on the controller
+	 * 
 	 * @param ex
 	 * @param request
 	 * @return
@@ -296,34 +279,5 @@ public class AccountController {
 		log.error("redirect to /uncaughtException");
 		return "redirect:/uncaughtException";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

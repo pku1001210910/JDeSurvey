@@ -1,38 +1,38 @@
-  /*Copyright (C) 2014  JD Software, Inc.
+/*Copyright (C) 2014  JD Software, Inc.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.jd.survey.domain.survey;
 
 import java.text.DecimalFormat;
 import java.util.Date;
 
 public class QuestionStatistic {
-	private  String entry;
-	private  Long count = (long) 0;
+	private String entry;
+	private Long count = (long) 0;
 
-	private  Short columnOrder;
-	private  Short rowOrder;
+	private Short columnOrder;
+	private Short rowOrder;
 	private Short optionOrder;
 
-	private  double min;
-	private  double max;
+	private double min;
+	private double max;
 
-	private  Date minDate;
-	private  Date maxDate;
-	private  double average;
-	private  double sampleStandardDeviation;
+	private Date minDate;
+	private Date maxDate;
+	private double average;
+	private double sampleStandardDeviation;
 	private long totalCount;
 
 	public QuestionStatistic() {
@@ -59,8 +59,12 @@ public class QuestionStatistic {
 	}
 
 	public void setCount(Long count) {
-		if (count == null) {this.count = (long) 0;} else {this.count = count;}
-		
+		if (count == null) {
+			this.count = (long) 0;
+		} else {
+			this.count = count;
+		}
+
 	}
 
 	public double getMin() {
@@ -103,7 +107,6 @@ public class QuestionStatistic {
 		this.totalCount = totalCount;
 	}
 
-
 	public Date getMinDate() {
 		return minDate;
 	}
@@ -115,8 +118,6 @@ public class QuestionStatistic {
 	public Date getMaxDate() {
 		return maxDate;
 	}
-
-
 
 	public void setMaxDate(Date maxDate) {
 		this.maxDate = maxDate;
@@ -138,10 +139,6 @@ public class QuestionStatistic {
 		this.rowOrder = rowOrder;
 	}
 
-	
-	
-
-	
 	public Short getOptionOrder() {
 		return optionOrder;
 	}
@@ -152,11 +149,11 @@ public class QuestionStatistic {
 
 	public double getFrequency() {
 		double percentage = 0;
-		if (totalCount != 0) {percentage = ((double)count/(double)totalCount);}
+		if (totalCount != 0) {
+			percentage = ((double) count / (double) totalCount);
+		}
 		return Double.valueOf(new DecimalFormat("#.##").format(percentage));
 
 	}
-
-
 
 }

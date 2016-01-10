@@ -1,23 +1,22 @@
-  /*Copyright (C) 2014  JD Software, Inc.
+/*Copyright (C) 2014  JD Software, Inc.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.jd.survey.domain.security;
 
 import java.io.Serializable;
 import java.util.Date;
-
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,59 +33,45 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-
-
-
 @Entity
 @Table(name = "sec_password_reset_request")
-@NamedQueries({
-	@NamedQuery(name = "PasswordResetRequest.findAll", query = "select o from PasswordResetRequest o"),
-	@NamedQuery(name = "PasswordResetRequest.findById", query = "select o from PasswordResetRequest o where o.id = ?1"),
-	@NamedQuery(name = "PasswordResetRequest.findByHash", query = "select o from PasswordResetRequest o where o.hash = ?1"),
-	@NamedQuery(name = "PasswordResetRequest.getCount", query = "select count(o) from User o")
-	})
+@NamedQueries({ @NamedQuery(name = "PasswordResetRequest.findAll", query = "select o from PasswordResetRequest o"),
+		@NamedQuery(name = "PasswordResetRequest.findById", query = "select o from PasswordResetRequest o where o.id = ?1"),
+		@NamedQuery(name = "PasswordResetRequest.findByHash", query = "select o from PasswordResetRequest o where o.hash = ?1"),
+		@NamedQuery(name = "PasswordResetRequest.getCount", query = "select count(o) from User o") })
 public class PasswordResetRequest implements Serializable {
-	
+
 	private static final long serialVersionUID = -6677965533812094354L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
+
 	@Version
-    @Column(name = "version")
-    private Integer version;
-	
-	
+	@Column(name = "version")
+	private Integer version;
+
 	@NotEmpty
 	@Size(max = 100)
-	@Column(length = 100, nullable= false)
+	@Column(length = 100, nullable = false)
 	private String login;
-	
-	
-	@Column(nullable= false)
+
+	@Column(nullable = false)
 	private Date requestDate;
-	
-	@Column(nullable= true)
+
+	@Column(nullable = true)
 	private Date resetDate;
-	
-	@Column(length = 500, nullable= false,name = "hashkey")
+
+	@Column(length = 500, nullable = false, name = "hashkey")
 	private String hash;
 
-	
-	
-	
-	
-	
-	
-	
 	public PasswordResetRequest() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public PasswordResetRequest(String login,String hash) {
+	public PasswordResetRequest(String login, String hash) {
 		super();
 		this.login = login;
 		this.requestDate = new Date();
@@ -140,12 +125,5 @@ public class PasswordResetRequest implements Serializable {
 	public void setResetDate(Date resetDate) {
 		this.resetDate = resetDate;
 	}
-				
-	
-	
-
-
-
-
 
 }

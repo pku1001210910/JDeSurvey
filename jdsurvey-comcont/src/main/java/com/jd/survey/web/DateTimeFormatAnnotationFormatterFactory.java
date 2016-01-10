@@ -1,19 +1,20 @@
-  /*Copyright (C) 2014  JD Software, Inc.
+/*Copyright (C) 2014  JD Software, Inc.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.jd.survey.web;
+
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Collections;
@@ -21,7 +22,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
-
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -40,18 +40,14 @@ import org.springframework.format.datetime.joda.JodaTimeContextHolder;
 import org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar;
 import org.springframework.util.StringUtils;
 
-public class DateTimeFormatAnnotationFormatterFactory implements
-AnnotationFormatterFactory<DateTimeFormat>, ApplicationContextAware {
-
+public class DateTimeFormatAnnotationFormatterFactory implements AnnotationFormatterFactory<DateTimeFormat>, ApplicationContextAware {
 
 	private final Set<Class<?>> fieldTypes;
 	private ConfigurableListableBeanFactory beanFactory = null;
 
-
 	public DateTimeFormatAnnotationFormatterFactory() {
 		this.fieldTypes = createFieldTypes();
 	}
-
 
 	/**
 	 * Create the set of field types that may be annotated with @DateTimeFormat.
@@ -71,14 +67,11 @@ AnnotationFormatterFactory<DateTimeFormat>, ApplicationContextAware {
 		return Collections.unmodifiableSet(rawFieldTypes);
 	}
 
-
 	public Set<Class<?>> getFieldTypes() {
 		return fieldTypes;
 	}
 
-
-	public Printer<Date> getPrinter(DateTimeFormat annotation,
-			Class<?> fieldType) {
+	public Printer<Date> getPrinter(DateTimeFormat annotation, Class<?> fieldType) {
 		if (Date.class.isAssignableFrom(fieldType)) {
 			return new DatePrinter(annotation);
 		} else {
@@ -86,7 +79,6 @@ AnnotationFormatterFactory<DateTimeFormat>, ApplicationContextAware {
 		}
 		// return configureFormatterFrom(annotation, fieldType);
 	}
-
 
 	public Parser<Date> getParser(DateTimeFormat annotation, Class<?> fieldType) {
 		if (Date.class.isAssignableFrom(fieldType)) {
@@ -96,12 +88,9 @@ AnnotationFormatterFactory<DateTimeFormat>, ApplicationContextAware {
 		}
 	}
 
-
 	public final class DatePrinter implements Printer<Date>, Parser<Date> {
 
-
 		private DateTimeFormat dateTimeFormat;
-
 
 		/**
 		 * Create a new ReadableInstantPrinter.
@@ -113,34 +102,24 @@ AnnotationFormatterFactory<DateTimeFormat>, ApplicationContextAware {
 			this.dateTimeFormat = dateTimeFormat;
 		}
 
-
 		private String evaluateExpression(String expression) {
-			Object value = beanFactory.getBeanExpressionResolver().evaluate(
-					expression, new BeanExpressionContext(beanFactory, null));
+			Object value = beanFactory.getBeanExpressionResolver().evaluate(expression, new BeanExpressionContext(beanFactory, null));
 			return value != null ? value.toString() : null;
 		}
-
 
 		private DateTimeFormatter getJodaFormatter() {
 			return configureDateTimeFormatterFrom(this.dateTimeFormat);
 		}
 
-
 		public String print(Date date, Locale locale) {
-			return JodaTimeContextHolder.getFormatter(getJodaFormatter(),
-					locale).print(new DateTime(date));
+			return JodaTimeContextHolder.getFormatter(getJodaFormatter(), locale).print(new DateTime(date));
 		}
-
 
 		public Date parse(String text, Locale locale) throws ParseException {
-			return JodaTimeContextHolder
-					.getFormatter(getJodaFormatter(), locale)
-					.parseDateTime(text).toDate();
+			return JodaTimeContextHolder.getFormatter(getJodaFormatter(), locale).parseDateTime(text).toDate();
 		}
 
-
-		private DateTimeFormatter configureDateTimeFormatterFrom(
-				DateTimeFormat annotation) {
+		private DateTimeFormatter configureDateTimeFormatterFrom(DateTimeFormat annotation) {
 			if (StringUtils.hasLength(annotation.pattern())) {
 				return forPattern(evaluateExpression(annotation.pattern()));
 			} else if (annotation.iso() != ISO.NONE) {
@@ -150,16 +129,13 @@ AnnotationFormatterFactory<DateTimeFormat>, ApplicationContextAware {
 			}
 		}
 
-
 		private DateTimeFormatter forPattern(String pattern) {
 			return org.joda.time.format.DateTimeFormat.forPattern(pattern);
 		}
 
-
 		private DateTimeFormatter forStyle(String style) {
 			return org.joda.time.format.DateTimeFormat.forStyle(style);
 		}
-
 
 		private DateTimeFormatter forIso(ISO iso) {
 			if (iso == ISO.DATE) {
@@ -172,10 +148,7 @@ AnnotationFormatterFactory<DateTimeFormat>, ApplicationContextAware {
 		}
 	}
 
-
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		beanFactory = ((ConfigurableApplicationContext) applicationContext)
-				.getBeanFactory();
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		beanFactory = ((ConfigurableApplicationContext) applicationContext).getBeanFactory();
 	}
 }

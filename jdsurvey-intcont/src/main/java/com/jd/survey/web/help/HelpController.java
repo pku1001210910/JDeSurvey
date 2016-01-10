@@ -30,8 +30,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jd.survey.service.settings.SurveySettingsService;
 
-
-
 @RequestMapping("/help")
 @Controller
 public class HelpController {

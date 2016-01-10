@@ -1,18 +1,18 @@
-  /*Copyright (C) 2014  JD Software, Inc.
+/*Copyright (C) 2014  JD Software, Inc.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.jd.survey.dao.settings;
 
 import org.skyway.spring.util.dao.AbstractJpaDao;
@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository("SurveyTemplateDAO")
 @Transactional
-public class SurveyTemplateDAOImpl extends AbstractJpaDao<SurveyTemplate> implements SurveyTemplateDAO{
+public class SurveyTemplateDAOImpl extends AbstractJpaDao<SurveyTemplate> implements SurveyTemplateDAO {
 
 	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { SurveyTemplate.class }));
 
@@ -62,8 +62,8 @@ public class SurveyTemplateDAOImpl extends AbstractJpaDao<SurveyTemplate> implem
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<SurveyTemplate> findAll(int startResult, int maxRows)	throws DataAccessException {
-		Query query = createNamedQuery("SurveyTemplate.findAll", startResult,maxRows);
+	public Set<SurveyTemplate> findAll(int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("SurveyTemplate.findAll", startResult, maxRows);
 		return new LinkedHashSet<SurveyTemplate>(query.getResultList());
 	}
 
@@ -77,24 +77,24 @@ public class SurveyTemplateDAOImpl extends AbstractJpaDao<SurveyTemplate> implem
 		}
 
 	}
-	
+
 	@Transactional
-	public Set<SurveyTemplate> findBySectorId(Long id)	throws DataAccessException {
-		return findBySectorId(id,-1,-1);
+	public Set<SurveyTemplate> findBySectorId(Long id) throws DataAccessException {
+		return findBySectorId(id, -1, -1);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<SurveyTemplate> findBySectorId(Long id,int startResult, int maxRows)	throws DataAccessException {
-		Query query = createNamedQuery("SurveyTemplate.findBySectorId", startResult,maxRows, id);
+	public Set<SurveyTemplate> findBySectorId(Long id, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("SurveyTemplate.findBySectorId", startResult, maxRows, id);
 		return new LinkedHashSet<SurveyTemplate>(query.getResultList());
 	}
-	
+
 	@Transactional
 	public Long getCount(Long id) throws DataAccessException {
 		try {
-			Query query = createNamedQuery("SurveyTemplate.getCount",-1,-1, id);
-			return  (Long) query.getSingleResult();
+			Query query = createNamedQuery("SurveyTemplate.getCount", -1, -1, id);
+			return (Long) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
 		}
@@ -120,6 +120,5 @@ public class SurveyTemplateDAOImpl extends AbstractJpaDao<SurveyTemplate> implem
 			return null;
 		}
 	}
-
 
 }

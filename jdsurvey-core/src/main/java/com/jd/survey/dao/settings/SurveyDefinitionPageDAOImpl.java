@@ -1,22 +1,21 @@
-  /*Copyright (C) 2014  JD Software, Inc.
+/*Copyright (C) 2014  JD Software, Inc.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.jd.survey.dao.settings;
 
 import com.jd.survey.dao.interfaces.settings.SurveyDefinitionPageDAO;
-import com.jd.survey.domain.settings.SurveyDefinition;
 import com.jd.survey.domain.settings.SurveyDefinitionPage;
 
 import java.util.Arrays;
@@ -37,11 +36,12 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.transaction.annotation.Transactional;
 
-/** DAO implementation to handle persistence for object :SurveyDefinitionPage
+/**
+ * DAO implementation to handle persistence for object :SurveyDefinitionPage
  */
 @Repository("SurveyDefinitionPageDAO")
 @Transactional
-public class SurveyDefinitionPageDAOImpl extends AbstractJpaDao<SurveyDefinitionPage> implements	SurveyDefinitionPageDAO {
+public class SurveyDefinitionPageDAOImpl extends AbstractJpaDao<SurveyDefinitionPage> implements SurveyDefinitionPageDAO {
 
 	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { SurveyDefinitionPage.class }));
 
@@ -67,8 +67,8 @@ public class SurveyDefinitionPageDAOImpl extends AbstractJpaDao<SurveyDefinition
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<SurveyDefinitionPage> findAll(int startResult, int maxRows)	throws DataAccessException {
-		Query query = createNamedQuery("SurveyDefinitionPage.findAll", startResult,maxRows);
+	public Set<SurveyDefinitionPage> findAll(int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("SurveyDefinitionPage.findAll", startResult, maxRows);
 		return new LinkedHashSet<SurveyDefinitionPage>(query.getResultList());
 	}
 
@@ -82,32 +82,27 @@ public class SurveyDefinitionPageDAOImpl extends AbstractJpaDao<SurveyDefinition
 		}
 
 	}
-	
+
 	@Transactional
-	public SurveyDefinitionPage findByOrder(Long surveyDefintionId,Short pageOrder) throws DataAccessException {
+	public SurveyDefinitionPage findByOrder(Long surveyDefintionId, Short pageOrder) throws DataAccessException {
 		try {
-			Query query = createNamedQuery("SurveyDefinitionPage.findByOrder", -1, -1, surveyDefintionId,pageOrder);
+			Query query = createNamedQuery("SurveyDefinitionPage.findByOrder", -1, -1, surveyDefintionId, pageOrder);
 			return (SurveyDefinitionPage) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
 		}
 
 	}
-	
-	
-	
-	
 
 	@Transactional
 	public Long getCount() throws DataAccessException {
 		try {
-			Query query = createNamedQuery("SurveyDefinitionPage.getCount",-1,-1);
-			return  (Long) query.getSingleResult();
+			Query query = createNamedQuery("SurveyDefinitionPage.getCount", -1, -1);
+			return (Long) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
 		}
 	}
-
 
 	@Transactional
 	public int deleteBySurveyDefinitionId(Long id) throws DataAccessException {
@@ -115,30 +110,21 @@ public class SurveyDefinitionPageDAOImpl extends AbstractJpaDao<SurveyDefinition
 		return query.executeUpdate();
 	}
 
-
-
-
 	@Transactional
 	public Set<SurveyDefinitionPage> findByTitle(String title) throws DataAccessException {
-		try{
-			Query query = createNamedQuery("SurveyDefinitionPage.findByTitle", -1,-1, title);
+		try {
+			Query query = createNamedQuery("SurveyDefinitionPage.findByTitle", -1, -1, title);
 			return new LinkedHashSet<SurveyDefinitionPage>(query.getResultList());
-		}catch (NoResultException nre){
+		} catch (NoResultException nre) {
 
-			return null; 
+			return null;
 
 		}
 
-
-
 	}
-
-
 
 	public boolean canBeMerged(SurveyDefinitionPage entity) {
 		return true;
 	}
-
-
 
 }

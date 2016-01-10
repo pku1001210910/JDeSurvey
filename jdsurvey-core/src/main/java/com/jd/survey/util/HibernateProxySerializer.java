@@ -23,7 +23,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import java.lang.reflect.Type;
 public class HibernateProxySerializer implements JsonSerializer<HibernateProxy> {
 
     @Override
@@ -39,5 +38,4 @@ public class HibernateProxySerializer implements JsonSerializer<HibernateProxy> 
         }
     }
 
-	
 }

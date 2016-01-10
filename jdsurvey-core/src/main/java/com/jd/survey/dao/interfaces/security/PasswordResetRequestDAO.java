@@ -10,9 +10,13 @@ import org.springframework.dao.DataAccessException;
  */
 public interface PasswordResetRequestDAO extends JpaDao<PasswordResetRequest> {
 	public Set<PasswordResetRequest> findAll() throws DataAccessException;
+
 	public Set<PasswordResetRequest> findAll(int startResult, int maxRows) throws DataAccessException;
+
 	public PasswordResetRequest findById(Long id) throws DataAccessException;
+
 	public Long getCount() throws DataAccessException;
+
 	public PasswordResetRequest findByHash(String hash) throws DataAccessException;
-	
+
 }

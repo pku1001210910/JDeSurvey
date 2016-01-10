@@ -1,18 +1,18 @@
-  /*Copyright (C) 2014  JD Software, Inc.
+/*Copyright (C) 2014  JD Software, Inc.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.jd.survey.dao.security;
 
 import com.jd.survey.dao.interfaces.security.GroupDAO;
@@ -36,11 +36,12 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.transaction.annotation.Transactional;
 
-/** DAO implementation to handle persistence for object :Group
+/**
+ * DAO implementation to handle persistence for object :Group
  */
 @Repository("GroupDAO")
 @Transactional
-public class GroupDAOImpl extends AbstractJpaDao<Group> implements	GroupDAO {
+public class GroupDAOImpl extends AbstractJpaDao<Group> implements GroupDAO {
 
 	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { Group.class }));
 
@@ -63,36 +64,35 @@ public class GroupDAOImpl extends AbstractJpaDao<Group> implements	GroupDAO {
 	public Set<Group> findAll() throws DataAccessException {
 		return findAll(-1, -1);
 	}
-	
+
 	@Transactional
 	public Set<Group> findAllInternal() throws DataAccessException {
 		return findAllInternal(-1, -1);
 	}
-	
+
 	@Transactional
 	public Set<Group> findAllExternal() throws DataAccessException {
 		return findAllExternal(-1, -1);
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public Set<Group> findAllInternal(int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("Group.findAllInternal", startResult,maxRows);
-		return new LinkedHashSet<Group>(query.getResultList());
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public Set<Group> findAllExternal(int startResult, int maxRows) throws DataAccessException {
-		Query query = createNamedQuery("Group.findAllExternal", startResult,maxRows);
+		Query query = createNamedQuery("Group.findAllInternal", startResult, maxRows);
 		return new LinkedHashSet<Group>(query.getResultList());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<Group> findAll(int startResult, int maxRows)	throws DataAccessException {
-		Query query = createNamedQuery("Group.findAll", startResult,maxRows);
+	public Set<Group> findAllExternal(int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("Group.findAllExternal", startResult, maxRows);
+		return new LinkedHashSet<Group>(query.getResultList());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<Group> findAll(int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("Group.findAll", startResult, maxRows);
 		return new LinkedHashSet<Group>(query.getResultList());
 	}
 
@@ -106,18 +106,17 @@ public class GroupDAOImpl extends AbstractJpaDao<Group> implements	GroupDAO {
 		}
 
 	}
-	
+
 	@Transactional
 	public Long getCount() throws DataAccessException {
 		try {
-			Query query = createNamedQuery("Group.getCount",-1,-1);
-			return  (Long) query.getSingleResult();
+			Query query = createNamedQuery("Group.getCount", -1, -1);
+			return (Long) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
 		}
 	}
 
-	
 	@Transactional
 	public Group findByName(String name) throws DataAccessException {
 		try {
@@ -128,9 +127,7 @@ public class GroupDAOImpl extends AbstractJpaDao<Group> implements	GroupDAO {
 		}
 
 	}
-	
-	
-	
+
 	public boolean canBeMerged(Group entity) {
 		return true;
 	}

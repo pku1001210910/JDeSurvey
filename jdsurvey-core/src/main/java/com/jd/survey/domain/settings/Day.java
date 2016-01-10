@@ -1,18 +1,18 @@
-  /*Copyright (C) 2014  JD Software, Inc.
+/*Copyright (C) 2014  JD Software, Inc.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.jd.survey.domain.settings;
 
 import java.io.Serializable;
@@ -39,14 +39,10 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @Table(name = "day")
-@NamedQueries({
-	@NamedQuery(name = "Day.findAll", query = "select o from Day o"),
-	@NamedQuery(name = "Day.findById", query = "select o from Day o where o.id = ?1"),
-	@NamedQuery(name = "Day.findByDayName", query = "select o from Day o where  o.dayName = ?1")
-	})
+@NamedQueries({ @NamedQuery(name = "Day.findAll", query = "select o from Day o"), @NamedQuery(name = "Day.findById", query = "select o from Day o where o.id = ?1"),
+		@NamedQuery(name = "Day.findByDayName", query = "select o from Day o where  o.dayName = ?1") })
 
-
-public class Day implements Comparable <Day> , Serializable {
+public class Day implements Comparable<Day>, Serializable {
 
 	private static final long serialVersionUID = 8386552512916837008L;
 
@@ -60,19 +56,17 @@ public class Day implements Comparable <Day> , Serializable {
 	private Integer version;
 
 	@NotBlank
-	@Column(unique = true,length = 10, nullable= false)
+	@Column(unique = true, length = 10, nullable = false)
 	@Size(max = 10)
 	private String dayName;
-	
-	
+
 	@NotNull
 	@ManyToMany
 	@Sort(type = SortType.NATURAL)
-	@JoinTable(name="surveydefinition_reminders_daily_port_schedule",joinColumns={@JoinColumn(name="day_id", referencedColumnName="id")},
-												inverseJoinColumns={@JoinColumn(name="surveyDefinition_id", referencedColumnName="id")})
+	@JoinTable(name = "surveydefinition_reminders_daily_port_schedule", joinColumns = { @JoinColumn(name = "day_id", referencedColumnName = "id") }, inverseJoinColumns = {
+			@JoinColumn(name = "surveyDefinition_id", referencedColumnName = "id") })
 	private SortedSet<SurveyDefinition> surveyDefinitions = new TreeSet<SurveyDefinition>();
-	
-			
+
 	public Long getId() {
 		return id;
 	}
@@ -97,29 +91,25 @@ public class Day implements Comparable <Day> , Serializable {
 		this.surveyDefinitions = surveyDefinitions;
 	}
 
-	//Comparable interface
-    @Override
+	// Comparable interface
+	@Override
 	public int compareTo(Day that) {
 
-    	final int BEFORE = -1;
+		final int BEFORE = -1;
 		final int AFTER = 1;
 		if (that == null) {
 			return BEFORE;
 		}
 		Comparable<Long> thisDay = this.getId();
 		Comparable<Long> thatDay = that.getId();
-		if(thisDay == null) {
+		if (thisDay == null) {
 			return AFTER;
-		} else if(thatDay == null) {
+		} else if (thatDay == null) {
 			return BEFORE;
 		} else {
 			return thisDay.compareTo(that.getId());
 		}
-    
-    }
-	
 
-		
-	
-	
+	}
+
 }

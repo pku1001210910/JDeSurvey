@@ -1,18 +1,18 @@
-  /*Copyright (C) 2014  JD Software, Inc.
+/*Copyright (C) 2014  JD Software, Inc.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.jd.survey.dao.settings;
 
 import com.jd.survey.dao.interfaces.settings.VelocityTemplateDAO;
@@ -36,11 +36,12 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.transaction.annotation.Transactional;
 
-/** DAO implementation to handle persistence for object :VelocityTemplate
+/**
+ * DAO implementation to handle persistence for object :VelocityTemplate
  */
 @Repository("VelocityTemplateDAO")
 @Transactional
-public class VelocityTemplateDAOImpl extends AbstractJpaDao<VelocityTemplate> implements	VelocityTemplateDAO {
+public class VelocityTemplateDAOImpl extends AbstractJpaDao<VelocityTemplate> implements VelocityTemplateDAO {
 
 	private final static Set<Class<?>> dataTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { VelocityTemplate.class }));
 
@@ -66,8 +67,8 @@ public class VelocityTemplateDAOImpl extends AbstractJpaDao<VelocityTemplate> im
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Set<VelocityTemplate> findAll(int startResult, int maxRows)	throws DataAccessException {
-		Query query = createNamedQuery("VelocityTemplate.findAll", startResult,maxRows);
+	public Set<VelocityTemplate> findAll(int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("VelocityTemplate.findAll", startResult, maxRows);
 		return new LinkedHashSet<VelocityTemplate>(query.getResultList());
 	}
 
@@ -92,17 +93,17 @@ public class VelocityTemplateDAOImpl extends AbstractJpaDao<VelocityTemplate> im
 		}
 
 	}
-	
+
 	@Transactional
 	public Long getCount() throws DataAccessException {
 		try {
-			Query query = createNamedQuery("VelocityTemplate.getCount",-1,-1);
-			return  (Long) query.getSingleResult();
+			Query query = createNamedQuery("VelocityTemplate.getCount", -1, -1);
+			return (Long) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
 		}
 	}
-	
+
 	public boolean canBeMerged(VelocityTemplate entity) {
 		return true;
 	}

@@ -1,18 +1,18 @@
-  /*Copyright (C) 2014  JD Software, Inc.
+/*Copyright (C) 2014  JD Software, Inc.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.jd.survey.domain.security;
 
 import java.io.Serializable;
@@ -42,61 +42,53 @@ import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.jd.survey.domain.settings.SurveyDefinition;
-
-
 @Entity
 @Table(name = "sec_group")
-@NamedQueries({
-	@NamedQuery(name = "Group.findAll", query = "select o from Group o order by o.type desc,o.name asc"),
-	@NamedQuery(name = "Group.findAllInternal", query = "select o from Group o where o.type='I' order by o.name asc"),
-	@NamedQuery(name = "Group.findAllExternal", query = "select o from Group o where o.type='E' order by o.name asc"),
-	@NamedQuery(name = "Group.findById", query = "select o from Group o where o.id = ?1"),
-	@NamedQuery(name = "Group.findByName", query = "select o from Group o where o.name = ?1"),
-	@NamedQuery(name = "Group.getCount", query = "select count(o) from Group o")
-	})
-public class Group implements  Comparable <Group> ,Serializable, SecurityObject {
+@NamedQueries({ @NamedQuery(name = "Group.findAll", query = "select o from Group o order by o.type desc,o.name asc"),
+		@NamedQuery(name = "Group.findAllInternal", query = "select o from Group o where o.type='I' order by o.name asc"),
+		@NamedQuery(name = "Group.findAllExternal", query = "select o from Group o where o.type='E' order by o.name asc"),
+		@NamedQuery(name = "Group.findById", query = "select o from Group o where o.id = ?1"),
+		@NamedQuery(name = "Group.findByName", query = "select o from Group o where o.name = ?1"), @NamedQuery(name = "Group.getCount", query = "select count(o) from Group o") })
+public class Group implements Comparable<Group>, Serializable, SecurityObject {
 
 	private static final long serialVersionUID = 1533223669720699638L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
+
 	@Version
-    @Column(name = "version")
-    private Integer version;
-	
+	@Column(name = "version")
+	private Integer version;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "GROUP_TYPE")
 	private SecurityType type;
-	
+
 	@NotNull
 	@NotEmpty
 	@Size(max = 75)
-	@Column(unique = true,length = 75, nullable= false)
+	@Column(unique = true, length = 75, nullable = false)
 	private String name;
-	
+
 	@Size(max = 500)
 	@Column(length = 500)
-    private String description;
+	private String description;
 
 	@ManyToMany
 	@Sort(type = SortType.NATURAL)
-	@JoinTable(name="sec_group_authority",joinColumns={@JoinColumn(name="group_id", referencedColumnName="id")},inverseJoinColumns={@JoinColumn(name="authority_id", referencedColumnName="id")})
-	private SortedSet<Authority> authorities  = new TreeSet<Authority>();
-	
-	
+	@JoinTable(name = "sec_group_authority", joinColumns = { @JoinColumn(name = "group_id", referencedColumnName = "id") }, inverseJoinColumns = {
+			@JoinColumn(name = "authority_id", referencedColumnName = "id") })
+	private SortedSet<Authority> authorities = new TreeSet<Authority>();
+
 	@NotNull
 	@ManyToMany
 	@Sort(type = SortType.NATURAL)
-	@JoinTable(name="sec_user_group",joinColumns={@JoinColumn(name="group_id", referencedColumnName="id")},
-	inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")})
+	@JoinTable(name = "sec_user_group", joinColumns = { @JoinColumn(name = "group_id", referencedColumnName = "id") }, inverseJoinColumns = {
+			@JoinColumn(name = "user_id", referencedColumnName = "id") })
 	private SortedSet<User> users = new TreeSet<User>();
 
-	
-	
 	public Long getId() {
 		return id;
 	}
@@ -112,7 +104,7 @@ public class Group implements  Comparable <Group> ,Serializable, SecurityObject 
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
-	
+
 	public SecurityType getType() {
 		return type;
 	}
@@ -120,7 +112,7 @@ public class Group implements  Comparable <Group> ,Serializable, SecurityObject 
 	public void setType(SecurityType type) {
 		this.type = type;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -136,7 +128,7 @@ public class Group implements  Comparable <Group> ,Serializable, SecurityObject 
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public SortedSet<Authority> getAuthorities() {
 		return authorities;
 	}
@@ -144,46 +136,41 @@ public class Group implements  Comparable <Group> ,Serializable, SecurityObject 
 	public void setAuthorities(SortedSet<Authority> authorities) {
 		this.authorities = authorities;
 	}
-	
-	
 
 	public String toString() {
-        return this.name;
-    }
-	
-	
-	
-	
+		return this.name;
+	}
+
 	public Group(SecurityType type) {
 		super();
 		this.type = type;
 	}
-	
+
 	public Group() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	//Comparable interface
-    @Override
+	// Comparable interface
+	@Override
 	public int compareTo(Group that) {
 
-    	final int BEFORE = -1;
+		final int BEFORE = -1;
 		final int AFTER = 1;
 		if (that == null) {
 			return BEFORE;
 		}
 		Comparable<String> thisGroup = this.getName();
 		Comparable<String> thatGroup = that.getName();
-		if(thisGroup == null) {
+		if (thisGroup == null) {
 			return AFTER;
-		} else if(thatGroup == null) {
+		} else if (thatGroup == null) {
 			return BEFORE;
 		} else {
 			return thisGroup.compareTo(that.getName());
 		}
-    
-    }
+
+	}
 
 	public SortedSet<User> getUsers() {
 		return users;
@@ -192,9 +179,5 @@ public class Group implements  Comparable <Group> ,Serializable, SecurityObject 
 	public void setUsers(SortedSet<User> users) {
 		this.users = users;
 	}
-	
-  
 
-	
-	
 }

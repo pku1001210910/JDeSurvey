@@ -1,18 +1,18 @@
-  /*Copyright (C) 2014  JD Software, Inc.
+/*Copyright (C) 2014  JD Software, Inc.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.jd.survey.domain.security;
 
 import java.io.Serializable;
@@ -36,50 +36,42 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 
-
-
-
 @Entity
 @Table(name = "sec_authority")
-@NamedQueries({
-	@NamedQuery(name = "Authority.findAll", query = "select o from Authority o order by o.type desc,o.name asc"),
-	@NamedQuery(name = "Authority.findAllInternal", query = "select o from Authority o where o.type='I' order by o.name asc"),
-	@NamedQuery(name = "Authority.findAllExternal", query = "select o from Authority o where o.type='E' order by o.name asc"),
-	@NamedQuery(name = "Authority.findById", query = "select o from Authority o where o.id = ?1"),
-	@NamedQuery(name = "Authority.findByName", query = "select o from Authority o where o.name = ?1"),
-	@NamedQuery(name = "Authority.getCount", query = "select count(o) from Authority o"),
-	@NamedQuery(name = "Authority.getbyUserId", query = "select a from User u inner join u.groups g inner join g.authorities a where u.id = ?1")
-	})
+@NamedQueries({ @NamedQuery(name = "Authority.findAll", query = "select o from Authority o order by o.type desc,o.name asc"),
+		@NamedQuery(name = "Authority.findAllInternal", query = "select o from Authority o where o.type='I' order by o.name asc"),
+		@NamedQuery(name = "Authority.findAllExternal", query = "select o from Authority o where o.type='E' order by o.name asc"),
+		@NamedQuery(name = "Authority.findById", query = "select o from Authority o where o.id = ?1"),
+		@NamedQuery(name = "Authority.findByName", query = "select o from Authority o where o.name = ?1"),
+		@NamedQuery(name = "Authority.getCount", query = "select count(o) from Authority o"),
+		@NamedQuery(name = "Authority.getbyUserId", query = "select a from User u inner join u.groups g inner join g.authorities a where u.id = ?1") })
 
-public class Authority  implements GrantedAuthority ,Comparable <Authority> ,Serializable, SecurityObject {
+public class Authority implements GrantedAuthority, Comparable<Authority>, Serializable, SecurityObject {
 
 	private static final long serialVersionUID = 6083393202423980337L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
+
 	@Version
-    @Column(name = "version")
-    private Integer version;
-	
+	@Column(name = "version")
+	private Integer version;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "AUTHORITY_TYPE")
 	private SecurityType type;
-	
+
 	@NotEmpty
 	@Size(max = 75)
-	@Column(unique = true,length = 75, nullable= false)
+	@Column(unique = true, length = 75, nullable = false)
 	private String name;
-	
-	
+
 	@Size(max = 500)
 	@Column(length = 500)
-    private String description;
-	
-	
-	
+	private String description;
+
 	public Long getId() {
 		return id;
 	}
@@ -96,7 +88,9 @@ public class Authority  implements GrantedAuthority ,Comparable <Authority> ,Ser
 		this.version = version;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jd.survey.domain.security.SecurityObject#getType()
 	 */
 	@Override
@@ -104,8 +98,12 @@ public class Authority  implements GrantedAuthority ,Comparable <Authority> ,Ser
 		return type;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.jd.survey.domain.security.SecurityObject#setType(com.jd.survey.domain.security.SecurityType)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.jd.survey.domain.security.SecurityObject#setType(com.jd.survey.domain
+	 * .security.SecurityType)
 	 */
 	@Override
 	public void setType(SecurityType type) {
@@ -120,24 +118,15 @@ public class Authority  implements GrantedAuthority ,Comparable <Authority> ,Ser
 		this.name = name;
 	}
 
-	
-	
-	
 	public String toString() {
-        return this.name;
-    }
+		return this.name;
+	}
 
 	@Override
 	public String getAuthority() {
 		return this.name;
 	}
 
-	
-	
-	
-	
-
-	
 	public String getDescription() {
 		return description;
 	}
@@ -146,28 +135,25 @@ public class Authority  implements GrantedAuthority ,Comparable <Authority> ,Ser
 		this.description = description;
 	}
 
-	//Comparable interface
-    @Override
+	// Comparable interface
+	@Override
 	public int compareTo(Authority that) {
 
-    	final int BEFORE = -1;
+		final int BEFORE = -1;
 		final int AFTER = 1;
 		if (that == null) {
 			return BEFORE;
 		}
 		Comparable<String> thisAuthority = this.getName();
 		Comparable<String> thatAuthority = that.getName();
-		if(thisAuthority == null) {
+		if (thisAuthority == null) {
 			return AFTER;
-		} else if(thatAuthority == null) {
+		} else if (thatAuthority == null) {
 			return BEFORE;
 		} else {
 			return thisAuthority.compareTo(that.getName());
 		}
-    
-    }
-	
-	
-	
-	
+
+	}
+
 }
